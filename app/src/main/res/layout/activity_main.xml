@@ -16,5 +16,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/globrain_icon_fin" />
+        app:srcCompat="@drawable/globrain_icon_fin"
+        android:contentDescription="@string/logo_image"/>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
