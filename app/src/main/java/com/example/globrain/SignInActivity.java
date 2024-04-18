@@ -16,7 +16,6 @@ public class SignInActivity extends AppCompatActivity {
     private EditText passwordEditText;
     private Button submitButton;
 
-    // Correct email and password
     private static final String CORRECT_EMAIL = "globrain@mail.ru";
     private static final String CORRECT_PASSWORD = "Globrain";
 
@@ -43,7 +42,7 @@ public class SignInActivity extends AppCompatActivity {
         String password = passwordEditText.getText().toString().trim();
 
         if (email.equals(CORRECT_EMAIL) && password.equals(CORRECT_PASSWORD)) {
-            Intent intent = new Intent(SignInActivity.this, MainActivity.class);
+            Intent intent = new Intent(SignInActivity.this, WordsGameActivity.class);
             startActivity(intent);
             finish();
         } else {

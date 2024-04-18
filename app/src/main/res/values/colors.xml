@@ -5,4 +5,6 @@
     <color name="main_blue">#00091A</color>
     <color name="hint_color">#4AC7C7C7</color>
     <color name="submit_color">#36353535</color>
+    <color name="grid_color">#36353535</color>
+    <color name="let_color">#C4FFFFFF</color>
 </resources>
