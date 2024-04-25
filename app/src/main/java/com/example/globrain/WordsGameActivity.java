@@ -1,7 +1,7 @@
 package com.example.globrain;
 
-import android.annotation.SuppressLint;
 import android.graphics.Color;
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.MotionEvent;
@@ -35,9 +35,7 @@ public class WordsGameActivity extends AppCompatActivity {
             "BGRBLMXEOAINKE" +
             "FRANCEDYNDSMSW";
 
-    //    private String[] words = {"EIFFEL", "CROISSANT", "PARIS", "FRANCE", "COGNAC", "BAGUETTE", "DIOR", "MACARON", "WINE", "MONET"};
-    private String[] words = {"  EIFFEL", "CROISSANT", "BAGUETTE", "MACARON"};
-
+    private String[] words = {"EIFFEL", "CROISSANT", "BAGUETTE", "MACARON"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,8 +56,8 @@ public class WordsGameActivity extends AppCompatActivity {
             String direction = "";
             StringBuilder selectedWord = new StringBuilder();
             List<TextView> selectedCells = new ArrayList<>();
+            List<TextView> foundCells = new ArrayList<>();
 
-            @SuppressLint("ClickableViewAccessibility")
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 float x = event.getX();
@@ -104,10 +102,30 @@ public class WordsGameActivity extends AppCompatActivity {
 
                         break;
                     case MotionEvent.ACTION_UP:
-
-                        for (TextView cell : selectedCells) {
-                            cell.setBackgroundColor(Color.TRANSPARENT);
+                        // Check if selectedWord is a valid word in the word list
+                        String word = selectedWord.toString().trim();
+                        if (word.length() > 0) {
+                            boolean isWordFound = false;
+                            for (int i = 0; i < words.length; i++) {
+                                if (words[i].equalsIgnoreCase(word)) {
+                                    isWordFound = true;
+                                    TextView wordTextView = (TextView) wordsContainer.getChildAt(i);
+                                    wordTextView.setPaintFlags(wordTextView.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+                                    wordTextView.setTextColor(Color.GRAY);
+                                    break;
+                                }
+                            }
+                            if (isWordFound) {
+                                foundCells.addAll(selectedCells);
+                            } else {
+                                for (TextView cell : selectedCells) {
+                                    if (!foundCells.contains(cell)) {
+                                        cell.setBackgroundColor(Color.TRANSPARENT);
+                                    }
+                                }
+                            }
                         }
+
                         selectedWord.setLength(0);
                         selectedCells.clear();
                         break;
@@ -118,11 +136,7 @@ public class WordsGameActivity extends AppCompatActivity {
                 return true;
             }
         });
-
-
     }
-
-
 
     private void createGrid() {
         for (int i = 0; i < letters.length(); i++) {
@@ -132,10 +146,10 @@ public class WordsGameActivity extends AppCompatActivity {
             textView.setPadding(10, 10, 10, 10);
             textView.setWidth(50);
             textView.setHeight(50);
-            textView.setFontFeatureSettings("@font/candal");
             grid.addView(textView);
         }
     }
+
     private void createWords() {
         for (String word : words) {
             TextView textView = new TextView(this);
@@ -154,5 +168,3 @@ public class WordsGameActivity extends AppCompatActivity {
         }
     }
 }
-
-

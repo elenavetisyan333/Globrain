@@ -7,4 +7,5 @@
     <color name="submit_color">#36353535</color>
     <color name="grid_color">#36353535</color>
     <color name="let_color">#C4FFFFFF</color>
+    <color name="selected_let">#94FFFFFF</color>
 </resources>
