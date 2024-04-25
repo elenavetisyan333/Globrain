@@ -1,5 +1,4 @@
 package com.example.globrain;
-
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.os.Bundle;
@@ -37,6 +36,11 @@ public class WordsGameActivity extends AppCompatActivity {
 
     private String[] words = {"EIFFEL", "CROISSANT", "BAGUETTE", "MACARON"};
 
+    private StringBuilder selectedWord;
+    private List<TextView> selectedCells;
+    private List<TextView> foundCells;
+    private TextView previousCell;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,15 +52,17 @@ public class WordsGameActivity extends AppCompatActivity {
         createGrid();
         createWords();
 
+        selectedWord = new StringBuilder();
+        selectedCells = new ArrayList<>();
+        foundCells = new ArrayList<>();
+        previousCell = null;
+
         grid.setOnTouchListener(new View.OnTouchListener() {
             float startX = 0;
             float startY = 0;
             float prevX = 0;
             float prevY = 0;
             String direction = "";
-            StringBuilder selectedWord = new StringBuilder();
-            List<TextView> selectedCells = new ArrayList<>();
-            List<TextView> foundCells = new ArrayList<>();
 
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -72,6 +78,7 @@ public class WordsGameActivity extends AppCompatActivity {
                         direction = "";
                         selectedWord.setLength(0);
                         selectedCells.clear();
+                        previousCell = null;
                         break;
                     case MotionEvent.ACTION_MOVE:
                         if (direction.equals("")) {
@@ -93,9 +100,12 @@ public class WordsGameActivity extends AppCompatActivity {
 
                             if (x > child.getLeft() && x < child.getRight() && y > child.getTop() && y < child.getBottom()) {
                                 if (!selectedCells.contains(child)) {
-                                    selectedWord.append(child.getText());
-                                    selectedCells.add(child);
-                                    child.setBackgroundColor(Color.WHITE);
+                                    if (previousCell == null || isAdjacent(child, previousCell)) {
+                                        selectedWord.append(child.getText());
+                                        selectedCells.add(child);
+                                        child.setBackgroundColor(Color.WHITE);
+                                        previousCell = child;
+                                    }
                                 }
                             }
                         }
@@ -112,12 +122,15 @@ public class WordsGameActivity extends AppCompatActivity {
                                     TextView wordTextView = (TextView) wordsContainer.getChildAt(i);
                                     wordTextView.setPaintFlags(wordTextView.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
                                     wordTextView.setTextColor(Color.GRAY);
+                                    wordTextView.setAlpha(0.5f);
                                     break;
                                 }
                             }
                             if (isWordFound) {
+                                // Word is found in the word list
                                 foundCells.addAll(selectedCells);
                             } else {
+                                // Word is not found in the word list
                                 for (TextView cell : selectedCells) {
                                     if (!foundCells.contains(cell)) {
                                         cell.setBackgroundColor(Color.TRANSPARENT);
@@ -128,6 +141,7 @@ public class WordsGameActivity extends AppCompatActivity {
 
                         selectedWord.setLength(0);
                         selectedCells.clear();
+                        previousCell = null;
                         break;
                 }
 
@@ -166,5 +180,18 @@ public class WordsGameActivity extends AppCompatActivity {
 
             wordsContainer.addView(textView);
         }
+    }
+
+    private boolean isAdjacent(TextView currentCell, TextView previousCell) {
+        int currentCellIndex = grid.indexOfChild(currentCell);
+        int previousCellIndex = grid.indexOfChild(previousCell);
+
+        int currentRow = currentCellIndex / grid.getColumnCount();
+        int currentColumn = currentCellIndex % grid.getColumnCount();
+
+        int previousRow = previousCellIndex / grid.getColumnCount();
+        int previousColumn = previousCellIndex % grid.getColumnCount();
+
+        return Math.abs(currentRow - previousRow) <= 1 && Math.abs(currentColumn - previousColumn) <= 1;
     }
 }
