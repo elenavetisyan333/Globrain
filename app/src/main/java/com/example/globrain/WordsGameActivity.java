@@ -12,6 +12,9 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class WordsGameActivity extends AppCompatActivity {
 
     private GridLayout grid;
@@ -50,7 +53,11 @@ public class WordsGameActivity extends AppCompatActivity {
         grid.setOnTouchListener(new View.OnTouchListener() {
             float startX = 0;
             float startY = 0;
+            float prevX = 0;
+            float prevY = 0;
             String direction = "";
+            StringBuilder selectedWord = new StringBuilder();
+            List<TextView> selectedCells = new ArrayList<>();
 
             @SuppressLint("ClickableViewAccessibility")
             @Override
@@ -62,7 +69,11 @@ public class WordsGameActivity extends AppCompatActivity {
                     case MotionEvent.ACTION_DOWN:
                         startX = x;
                         startY = y;
+                        prevX = x;
+                        prevY = y;
                         direction = "";
+                        selectedWord.setLength(0);
+                        selectedCells.clear();
                         break;
                     case MotionEvent.ACTION_MOVE:
                         if (direction.equals("")) {
@@ -73,27 +84,37 @@ public class WordsGameActivity extends AppCompatActivity {
                             }
                         }
 
+                        if (direction.equals("horizontal")) {
+                            y = prevY;
+                        } else if (direction.equals("vertical")) {
+                            x = prevX;
+                        }
+
                         for (int i = 0; i < grid.getChildCount(); i++) {
                             TextView child = (TextView) grid.getChildAt(i);
 
                             if (x > child.getLeft() && x < child.getRight() && y > child.getTop() && y < child.getBottom()) {
-                                if ((direction.equals("horizontal") && Math.abs(y - startY) < child.getHeight())
-                                        || (direction.equals("vertical") && Math.abs(x - startX) < child.getWidth())) {
+                                if (!selectedCells.contains(child)) {
+                                    selectedWord.append(child.getText());
+                                    selectedCells.add(child);
                                     child.setBackgroundColor(Color.WHITE);
-                                } else {
-                                    return false;
                                 }
                             }
                         }
+
                         break;
                     case MotionEvent.ACTION_UP:
-                        for (int i = 0; i < grid.getChildCount(); i++) {
-                            TextView child = (TextView) grid.getChildAt(i);
-                            child.setBackgroundColor(Color.TRANSPARENT);
+
+                        for (TextView cell : selectedCells) {
+                            cell.setBackgroundColor(Color.TRANSPARENT);
                         }
+                        selectedWord.setLength(0);
+                        selectedCells.clear();
                         break;
                 }
 
+                prevX = x;
+                prevY = y;
                 return true;
             }
         });
