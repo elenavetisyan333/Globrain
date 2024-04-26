@@ -5,5 +5,10 @@
     <string name="sign_in">Sign In</string>
     <string name="email">Email</string>
     <string name="password">Password</string>
+    <string name="conf_password">Confirm Password</string>
     <string name="submit">Submit</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="name">Name</string>
+    <string name="account_yes">Already have an account?   Sign In</string>
+    <string name="account_no">Don\'t have an account?   Sign Up</string>
 </resources>

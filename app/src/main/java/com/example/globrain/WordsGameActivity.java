@@ -1,4 +1,5 @@
 package com.example.globrain;
+
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.os.Bundle;
@@ -10,6 +11,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,6 +42,7 @@ public class WordsGameActivity extends AppCompatActivity {
     private List<TextView> selectedCells;
     private List<TextView> foundCells;
     private TextView previousCell;
+    private List<TextView> previousFoundCells;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +59,7 @@ public class WordsGameActivity extends AppCompatActivity {
         selectedCells = new ArrayList<>();
         foundCells = new ArrayList<>();
         previousCell = null;
+        previousFoundCells = new ArrayList<>();
 
         grid.setOnTouchListener(new View.OnTouchListener() {
             float startX = 0;
@@ -103,7 +107,7 @@ public class WordsGameActivity extends AppCompatActivity {
                                     if (previousCell == null || isAdjacent(child, previousCell)) {
                                         selectedWord.append(child.getText());
                                         selectedCells.add(child);
-                                        child.setBackgroundColor(Color.WHITE);
+                                        child.setBackgroundColor(Color.parseColor("#94FFFFFF"));
                                         previousCell = child;
                                     }
                                 }
@@ -129,12 +133,19 @@ public class WordsGameActivity extends AppCompatActivity {
                             if (isWordFound) {
                                 // Word is found in the word list
                                 foundCells.addAll(selectedCells);
+                                previousFoundCells.addAll(selectedCells);
+                                for (TextView cell : selectedCells) {
+                                    cell.setBackgroundColor(Color.WHITE);
+                                }
                             } else {
                                 // Word is not found in the word list
                                 for (TextView cell : selectedCells) {
                                     if (!foundCells.contains(cell)) {
                                         cell.setBackgroundColor(Color.TRANSPARENT);
                                     }
+                                }
+                                for (TextView cell : previousFoundCells) {
+                                    cell.setBackgroundColor(Color.WHITE);
                                 }
                             }
                         }
