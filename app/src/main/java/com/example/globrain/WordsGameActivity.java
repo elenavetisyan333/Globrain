@@ -1,5 +1,6 @@
 package com.example.globrain;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.os.Bundle;
@@ -12,6 +13,8 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -164,13 +167,18 @@ public class WordsGameActivity extends AppCompatActivity {
     }
 
     private void createGrid() {
+        int gridSize = (int) Math.sqrt(letters.length());
+
+        int screenWidth = getResources().getDisplayMetrics().widthPixels;
+        int cellSize = screenWidth / gridSize;
+
         for (int i = 0; i < letters.length(); i++) {
             TextView textView = new TextView(this);
             textView.setText(String.valueOf(letters.charAt(i)));
             textView.setGravity(Gravity.CENTER);
             textView.setPadding(10, 10, 10, 10);
-            textView.setWidth(50);
-            textView.setHeight(50);
+            textView.setWidth(cellSize);
+            textView.setHeight(cellSize);
             grid.addView(textView);
         }
     }
@@ -204,5 +212,11 @@ public class WordsGameActivity extends AppCompatActivity {
         int previousColumn = previousCellIndex % grid.getColumnCount();
 
         return Math.abs(currentRow - previousRow) <= 1 && Math.abs(currentColumn - previousColumn) <= 1;
+    }
+
+    public void logout(View view){
+        FirebaseAuth.getInstance().signOut();
+        Intent intent = new Intent(getApplicationContext(), SignInActivity.class);
+        startActivity(intent);
     }
 }

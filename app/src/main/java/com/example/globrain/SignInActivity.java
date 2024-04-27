@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.TextPaint;
+import android.text.TextUtils;
 import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
 import android.view.View;
@@ -14,38 +15,99 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+
 
 public class SignInActivity extends AppCompatActivity {
 
-    private EditText emailEditText;
-    private EditText passwordEditText;
-    private Button submitButton;
+    private EditText emailInput;
+    private EditText passwordInput;
+    private Button buttonLog;
 
-    private static final String CORRECT_EMAIL = "globrain@mail.ru";
-    private static final String CORRECT_PASSWORD = "Globrain";
+    private FirebaseAuth mAuth;
 
-    @SuppressLint("MissingInflatedId")
+//    @Override
+//    public void onStart() {
+//        super.onStart();
+//        // Check if user is signed in (non-null) and update UI accordingly.
+//        FirebaseUser currentUser = mAuth.getCurrentUser();
+//        if(currentUser != null){
+//            reload();
+//        }
+//    }
+
+//    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_sign_in);
 
-        emailEditText = findViewById(R.id.emailInput);
-        passwordEditText = findViewById(R.id.passwordInput);
-        submitButton = findViewById(R.id.submitBtn);
+        mAuth = FirebaseAuth.getInstance();
 
-        submitButton.setOnClickListener(new View.OnClickListener() {
+        emailInput = findViewById(R.id.emailInput);
+        passwordInput = findViewById(R.id.passwordInput);
+        buttonLog = findViewById(R.id.submitBtn);
+
+
+        if(mAuth.getCurrentUser() != null){
+            Intent intent = new Intent(SignInActivity.this, WordsGameActivity.class);
+            startActivity(intent);
+            finish();
+        }
+
+        buttonLog.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                signIn();
+                String email, password;
+                email = String.valueOf(emailInput.getText());
+                password = String.valueOf(passwordInput.getText());
+
+                if(TextUtils.isEmpty(email)){
+                    emailInput.setError("Email is Required");
+                    return;
+                }
+
+                if(TextUtils.isEmpty(password)){
+                    passwordInput.setError("Password is Required");
+                    return;
+                }
+
+
+
+
+                mAuth.signInWithEmailAndPassword(email, password)
+                        .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                            @Override
+                            public void onComplete(@NonNull Task<AuthResult> task) {
+                                if (task.isSuccessful()) {
+                                    Toast.makeText(SignInActivity.this, "Signed In Successfully",
+                                            Toast.LENGTH_SHORT).show();
+
+                                    Intent intent = new Intent(SignInActivity.this, WordsGameActivity.class);
+                                    startActivity(intent);
+                                } else {
+                                    Toast.makeText(SignInActivity.this, "Incorrect email or password",
+                                            Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        });
             }
         });
 
+//        going to registration (start)
         TextView textView = findViewById(R.id.account_no);
 
         String text = "Dont't have an account?   Sign Up";
@@ -70,7 +132,7 @@ public class SignInActivity extends AppCompatActivity {
 
         textView.setMovementMethod(LinkMovementMethod.getInstance());
         textView.setText(spannableString);
-
+//(end)
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
@@ -79,16 +141,4 @@ public class SignInActivity extends AppCompatActivity {
         });
     }
 
-    private void signIn() {
-        String email = emailEditText.getText().toString().trim();
-        String password = passwordEditText.getText().toString().trim();
-
-        if (email.equals(CORRECT_EMAIL) && password.equals(CORRECT_PASSWORD)) {
-            Intent intent = new Intent(SignInActivity.this, WordsGameActivity.class);
-            startActivity(intent);
-            finish();
-        } else {
-            Toast.makeText(SignInActivity.this, "Incorrect email or password", Toast.LENGTH_SHORT).show();
-        }
-    }
 }

@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -6,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/main_blue"
-    tools:context=".MainActivity">
+    tools:context=".WordsGameActivity">
 
     <GridLayout
         android:id="@+id/grid"
@@ -18,8 +17,9 @@
         android:orientation="horizontal"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toTopOf="@+id/words_container"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+        app:layout_constraintDimensionRatio="1:1">
 
     </GridLayout>
 
@@ -30,9 +30,26 @@
         android:orientation="horizontal"
         app:layout_constraintTop_toBottomOf="@id/grid"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
 
     </LinearLayout>
+
+    <Button
+        android:id="@+id/submitBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="44dp"
+        android:backgroundTint="@color/submit_color"
+        android:paddingLeft="33dp"
+        android:paddingTop="15dp"
+        android:paddingRight="33dp"
+        android:paddingBottom="15dp"
+        android:text="@string/sign_out"
+        android:textSize="19sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/words_container"
+        android:onClick="logout"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
