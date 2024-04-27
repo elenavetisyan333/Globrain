@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "336912036149",
+    "project_id": "globrain-333",
+    "storage_bucket": "globrain-333.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:336912036149:android:c877bc9eb774cc99e29c7c",
+        "android_client_info": {
+          "package_name": "com.example.globrain"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAxwx8d7CFnet9nbwLhAaLK_WbUNT2wNYo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
