@@ -25,6 +25,8 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
@@ -83,6 +85,21 @@ public class RegistrationActivity extends AppCompatActivity {
                             @Override
                             public void onComplete(@NonNull Task<AuthResult> task) {
                                 if (task.isSuccessful()) {
+//                                    verificaiton link
+
+                                    FirebaseUser user = mAuth.getCurrentUser();
+                                    user.sendEmailVerification().addOnSuccessListener(new OnSuccessListener<Void>() {
+                                        @Override
+                                        public void onSuccess(Void unused) {
+                                            Toast.makeText(RegistrationActivity.this, "Verification email has been sent", Toast.LENGTH_SHORT).show();
+                                        }
+                                    }).addOnFailureListener(new OnFailureListener() {
+                                        @Override
+                                        public void onFailure(@NonNull Exception e) {
+                                            Toast.makeText(RegistrationActivity.this, "onFailure: Email hasn't been sent: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                                        }
+                                    });
+
                                     Toast.makeText(RegistrationActivity.this, "Signed Up Successfully",
                                             Toast.LENGTH_SHORT).show();
 
