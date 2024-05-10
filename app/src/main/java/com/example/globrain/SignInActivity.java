@@ -63,9 +63,11 @@ public class SignInActivity extends AppCompatActivity {
 
 
         if(mAuth.getCurrentUser() != null){
-            Intent intent = new Intent(SignInActivity.this, WordsGameActivity.class);
-            startActivity(intent);
-            finish();
+            if(mAuth.getCurrentUser().isEmailVerified()){
+                Intent intent = new Intent(SignInActivity.this, WordsGameActivity.class);
+                startActivity(intent);
+                finish();
+            }
         }
 
         buttonLog.setOnClickListener(new View.OnClickListener() {
@@ -96,8 +98,13 @@ public class SignInActivity extends AppCompatActivity {
                                     Toast.makeText(SignInActivity.this, "Signed In Successfully",
                                             Toast.LENGTH_SHORT).show();
 
-                                    Intent intent = new Intent(SignInActivity.this, WordsGameActivity.class);
-                                    startActivity(intent);
+                                    if(mAuth.getCurrentUser().isEmailVerified()){
+                                        Intent intent = new Intent(SignInActivity.this, WordsGameActivity.class);
+                                        startActivity(intent);
+                                    } else{
+                                        Intent intent = new Intent(SignInActivity.this, EmailVerificationActivity.class);
+                                        startActivity(intent);
+                                    }
                                 } else {
                                     Toast.makeText(SignInActivity.this, "Incorrect email or password",
                                             Toast.LENGTH_SHORT).show();

@@ -103,8 +103,14 @@ public class RegistrationActivity extends AppCompatActivity {
                                     Toast.makeText(RegistrationActivity.this, "Signed Up Successfully",
                                             Toast.LENGTH_SHORT).show();
 
-                                    Intent intent = new Intent(RegistrationActivity.this, WordsGameActivity.class);
-                                    startActivity(intent);
+                                    if(mAuth.getCurrentUser().isEmailVerified()){
+                                        Intent intent = new Intent(RegistrationActivity.this, WordsGameActivity.class);
+                                        startActivity(intent);
+                                    } else{
+                                        Intent intent = new Intent(RegistrationActivity.this, EmailVerificationActivity.class);
+                                        startActivity(intent);
+                                    }
+
                                 } else {
                                     Toast.makeText(RegistrationActivity.this, "Authentication failed: " + task.getException().getMessage(),
                                             Toast.LENGTH_SHORT).show();

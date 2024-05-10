@@ -15,6 +15,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,10 +48,21 @@ public class WordsGameActivity extends AppCompatActivity {
     private TextView previousCell;
     private List<TextView> previousFoundCells;
 
+    private FirebaseAuth mAuth;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_words_game);
+
+        mAuth = FirebaseAuth.getInstance();
+        FirebaseUser user = mAuth.getCurrentUser();
+
+        if(!user.isEmailVerified() && mAuth.getCurrentUser() == null){
+            Intent intent = new Intent(WordsGameActivity.this, EmailVerificationActivity.class);
+            startActivity(intent);
+            finish();
+        }
 
         grid = findViewById(R.id.grid);
         wordsContainer = findViewById(R.id.words_container);
