@@ -64,7 +64,7 @@ public class SignInActivity extends AppCompatActivity {
 
         if(mAuth.getCurrentUser() != null){
             if(mAuth.getCurrentUser().isEmailVerified()){
-                Intent intent = new Intent(SignInActivity.this, WordsGameActivity.class);
+                Intent intent = new Intent(SignInActivity.this, HomeActivity.class);
                 startActivity(intent);
                 finish();
             }
@@ -99,7 +99,7 @@ public class SignInActivity extends AppCompatActivity {
                                             Toast.LENGTH_SHORT).show();
 
                                     if(mAuth.getCurrentUser().isEmailVerified()){
-                                        Intent intent = new Intent(SignInActivity.this, WordsGameActivity.class);
+                                        Intent intent = new Intent(SignInActivity.this, HomeActivity.class);
                                         startActivity(intent);
                                     } else{
                                         Intent intent = new Intent(SignInActivity.this, EmailVerificationActivity.class);

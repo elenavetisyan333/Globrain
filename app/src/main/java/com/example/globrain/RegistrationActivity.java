@@ -52,7 +52,7 @@ public class RegistrationActivity extends AppCompatActivity {
         buttonReg = findViewById(R.id.submitBtn);
 
         if(mAuth.getCurrentUser() != null){
-            Intent intent = new Intent(RegistrationActivity.this, WordsGameActivity.class);
+            Intent intent = new Intent(RegistrationActivity.this, HomeActivity.class);
             startActivity(intent);
             finish();
         }
@@ -104,7 +104,7 @@ public class RegistrationActivity extends AppCompatActivity {
                                             Toast.LENGTH_SHORT).show();
 
                                     if(mAuth.getCurrentUser().isEmailVerified()){
-                                        Intent intent = new Intent(RegistrationActivity.this, WordsGameActivity.class);
+                                        Intent intent = new Intent(RegistrationActivity.this, HomeActivity.class);
                                         startActivity(intent);
                                     } else{
                                         Intent intent = new Intent(RegistrationActivity.this, EmailVerificationActivity.class);
