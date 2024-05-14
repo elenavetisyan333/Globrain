@@ -7,6 +7,19 @@
     android:background="@color/main_blue"
     tools:context=".WordsGameActivity">
 
+    <TextView
+        android:id="@+id/timerTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="24sp"
+        android:textColor="@android:color/white"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:padding="16dp"
+        android:gravity="center"
+        android:text="00:00" />
+
     <GridLayout
         android:id="@+id/grid"
         android:layout_width="wrap_content"

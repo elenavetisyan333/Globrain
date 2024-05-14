@@ -1,9 +1,11 @@
 package com.example.globrain;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
@@ -11,6 +13,7 @@ import android.widget.GridLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 
@@ -19,6 +22,7 @@ import com.google.firebase.auth.FirebaseUser;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class WordsGameActivity extends AppCompatActivity {
 
@@ -50,6 +54,10 @@ public class WordsGameActivity extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
 
+    private CountDownTimer timer;
+    private TextView timerTextView;
+    private long timeLeftInMillis = 5000; // 1 minute
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,11 +66,28 @@ public class WordsGameActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         FirebaseUser user = mAuth.getCurrentUser();
 
-        if(!user.isEmailVerified() && mAuth.getCurrentUser() == null){
+        if (!user.isEmailVerified() && mAuth.getCurrentUser() == null) {
             Intent intent = new Intent(WordsGameActivity.this, EmailVerificationActivity.class);
             startActivity(intent);
             finish();
         }
+
+        timerTextView = findViewById(R.id.timerTextView);
+
+        timer = new CountDownTimer(timeLeftInMillis, 1000) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+                timeLeftInMillis = millisUntilFinished;
+                updateTimer();
+            }
+
+            @Override
+            public void onFinish() {
+                showGameOverDialog();
+            }
+        };
+
+        timer.start();
 
         grid = findViewById(R.id.grid);
         wordsContainer = findViewById(R.id.words_container);
@@ -226,9 +251,23 @@ public class WordsGameActivity extends AppCompatActivity {
         return Math.abs(currentRow - previousRow) <= 1 && Math.abs(currentColumn - previousColumn) <= 1;
     }
 
-    public void logout(View view){
+    public void logout(View view) {
         FirebaseAuth.getInstance().signOut();
         Intent intent = new Intent(getApplicationContext(), SignInActivity.class);
         startActivity(intent);
+    }
+
+    private void updateTimer() {
+        int minutes = (int) (timeLeftInMillis / 1000) / 60;
+        int seconds = (int) (timeLeftInMillis / 1000) % 60;
+
+        String timeFormatted = String.format(Locale.getDefault(), "%02d:%02d", minutes, seconds);
+        timerTextView.setText(timeFormatted);
+    }
+
+    private void showGameOverDialog() {
+        Intent intent = new Intent(WordsGameActivity.this, GameOverActivity.class);
+        startActivity(intent);
+        finish();
     }
 }
