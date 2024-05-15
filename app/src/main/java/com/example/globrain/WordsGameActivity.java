@@ -1,6 +1,5 @@
 package com.example.globrain;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -13,12 +12,7 @@ import android.widget.GridLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-
-
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -52,25 +46,14 @@ public class WordsGameActivity extends AppCompatActivity {
     private TextView previousCell;
     private List<TextView> previousFoundCells;
 
-    private FirebaseAuth mAuth;
-
     private CountDownTimer timer;
     private TextView timerTextView;
-    private long timeLeftInMillis = 5000; // 1 minute
+    private long timeLeftInMillis = 20000; // 20 seconds
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_words_game);
-
-        mAuth = FirebaseAuth.getInstance();
-        FirebaseUser user = mAuth.getCurrentUser();
-
-        if (!user.isEmailVerified() && mAuth.getCurrentUser() == null) {
-            Intent intent = new Intent(WordsGameActivity.this, EmailVerificationActivity.class);
-            startActivity(intent);
-            finish();
-        }
 
         timerTextView = findViewById(R.id.timerTextView);
 
@@ -193,6 +176,9 @@ public class WordsGameActivity extends AppCompatActivity {
                         selectedWord.setLength(0);
                         selectedCells.clear();
                         previousCell = null;
+
+                        checkGameStatus();
+
                         break;
                 }
 
@@ -251,12 +237,6 @@ public class WordsGameActivity extends AppCompatActivity {
         return Math.abs(currentRow - previousRow) <= 1 && Math.abs(currentColumn - previousColumn) <= 1;
     }
 
-    public void logout(View view) {
-        FirebaseAuth.getInstance().signOut();
-        Intent intent = new Intent(getApplicationContext(), SignInActivity.class);
-        startActivity(intent);
-    }
-
     private void updateTimer() {
         int minutes = (int) (timeLeftInMillis / 1000) / 60;
         int seconds = (int) (timeLeftInMillis / 1000) % 60;
@@ -269,5 +249,32 @@ public class WordsGameActivity extends AppCompatActivity {
         Intent intent = new Intent(WordsGameActivity.this, GameOverActivity.class);
         startActivity(intent);
         finish();
+    }
+
+    private void checkGameStatus() {
+        int totalWords = words.length;
+        int foundWords = 0;
+
+        for (String word : words) {
+            boolean isWordFound = false;
+            for (int i = 0; i < wordsContainer.getChildCount(); i++) {
+                TextView wordTextView = (TextView) wordsContainer.getChildAt(i);
+                if (wordTextView.getText().toString().equalsIgnoreCase(word) &&
+                        (wordTextView.getPaintFlags() & Paint.STRIKE_THRU_TEXT_FLAG) != 0) {
+                    isWordFound = true;
+                    break;
+                }
+            }
+            if (isWordFound) {
+                foundWords++;
+            }
+        }
+
+        if (foundWords == totalWords) {
+            timer.cancel();
+            Intent intent = new Intent(WordsGameActivity.this, LevelCompletedActivity.class);
+            startActivity(intent);
+            finish();
+        }
     }
 }
