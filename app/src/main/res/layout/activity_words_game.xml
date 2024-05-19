@@ -48,21 +48,4 @@
 
     </LinearLayout>
 
-    <Button
-        android:id="@+id/submitBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="44dp"
-        android:backgroundTint="@color/submit_color"
-        android:paddingLeft="33dp"
-        android:paddingTop="15dp"
-        android:paddingRight="33dp"
-        android:paddingBottom="15dp"
-        android:text="@string/sign_out"
-        android:textSize="19sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/words_container"
-        android:onClick="logout"/>
-
 </androidx.constraintlayout.widget.ConstraintLayout>

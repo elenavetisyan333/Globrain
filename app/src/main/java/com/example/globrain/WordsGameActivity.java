@@ -31,7 +31,7 @@ public class WordsGameActivity extends AppCompatActivity {
 
     private CountDownTimer timer;
     private TextView timerTextView;
-    private long timeLeftInMillis = 20000; // 20 seconds
+    private long timeLeftInMillis = 50000; //
 
     private String country;
     private String[] words;
