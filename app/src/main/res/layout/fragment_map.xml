@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -21,6 +22,45 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:srcCompat="@drawable/france_icon" />
+
+        <ImageButton
+            android:id="@+id/ArmeniaIcon"
+            android:layout_width="140sp"
+            android:layout_height="140sp"
+            android:layout_marginBottom="64dp"
+            android:backgroundTint="#00FFFFFF"
+            android:contentDescription="Armenia Icon"
+            android:scaleType="fitCenter"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/FranceIcon"
+            app:srcCompat="@drawable/armenia_icon" />
+
+        <ImageButton
+            android:id="@+id/ItalyIcon"
+            android:layout_width="140sp"
+            android:layout_height="140sp"
+            android:layout_marginBottom="140dp"
+            android:backgroundTint="#00FFFFFF"
+            android:contentDescription="Italy Icon"
+            android:scaleType="fitCenter"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/ArmeniaIcon"
+            app:layout_constraintStart_toStartOf="parent"
+            app:srcCompat="@drawable/italy_icon" />
+
+        <ImageButton
+            android:id="@+id/RussiaIcon"
+            android:layout_width="140sp"
+            android:layout_height="140sp"
+            android:layout_marginStart="128dp"
+            android:layout_marginBottom="16dp"
+            android:backgroundTint="#00FFFFFF"
+            android:contentDescription="Russia Icon"
+            android:scaleType="fitCenter"
+            app:layout_constraintBottom_toTopOf="@+id/ArmeniaIcon"
+            app:layout_constraintStart_toStartOf="parent"
+            app:srcCompat="@drawable/russia_icon" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

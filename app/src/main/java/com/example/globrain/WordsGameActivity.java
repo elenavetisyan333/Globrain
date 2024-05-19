@@ -23,23 +23,6 @@ public class WordsGameActivity extends AppCompatActivity {
     private GridLayout grid;
     private LinearLayout wordsContainer;
 
-    private String letters = "VIEMACARONBVLV" +
-            "UECROISSANTCQS" +
-            "CCHTONVGCJFADN" +
-            "OMVIVGXRAAVIBA" +
-            "GLZYBAGUETTEMU" +
-            "NEIFFELHIUEEOJ" +
-            "AVSKWDKDSFIRNY" +
-            "CUBXINILOUVREB" +
-            "MNGTNJBONHAATE" +
-            "REYZEBDLRQPCAI" +
-            "TPQTWGMUDBAKAD" +
-            "CBAMUHWBRYRPDJ" +
-            "BGRBLMXEOAINKE" +
-            "FRANCEDYNDSMSW";
-
-    private String[] words = {"EIFFEL", "CROISSANT", "BAGUETTE", "MACARON"};
-
     private StringBuilder selectedWord;
     private List<TextView> selectedCells;
     private List<TextView> foundCells;
@@ -50,10 +33,21 @@ public class WordsGameActivity extends AppCompatActivity {
     private TextView timerTextView;
     private long timeLeftInMillis = 20000; // 20 seconds
 
+    private String country;
+    private String[] words;
+    private String lettersTable;
+
+    private boolean isGameFinished = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_words_game);
+
+        Intent intent = getIntent();
+        country = intent.getStringExtra("country");
+        words = intent.getStringArrayExtra("words");
+        lettersTable = intent.getStringExtra("lettersTable");
 
         timerTextView = findViewById(R.id.timerTextView);
 
@@ -66,7 +60,9 @@ public class WordsGameActivity extends AppCompatActivity {
 
             @Override
             public void onFinish() {
-                showGameOverDialog();
+                if(!isGameFinished){
+                    showGameOverDialog();
+                }
             }
         };
 
@@ -190,14 +186,14 @@ public class WordsGameActivity extends AppCompatActivity {
     }
 
     private void createGrid() {
-        int gridSize = (int) Math.sqrt(letters.length());
+        int gridSize = (int) Math.sqrt(lettersTable.length());
 
         int screenWidth = getResources().getDisplayMetrics().widthPixels;
         int cellSize = screenWidth / gridSize;
 
-        for (int i = 0; i < letters.length(); i++) {
+        for (int i = 0; i < lettersTable.length(); i++) {
             TextView textView = new TextView(this);
-            textView.setText(String.valueOf(letters.charAt(i)));
+            textView.setText(String.valueOf(lettersTable.charAt(i)));
             textView.setGravity(Gravity.CENTER);
             textView.setPadding(10, 10, 10, 10);
             textView.setWidth(cellSize);
@@ -246,7 +242,11 @@ public class WordsGameActivity extends AppCompatActivity {
     }
 
     private void showGameOverDialog() {
+        isGameFinished = true;
         Intent intent = new Intent(WordsGameActivity.this, GameOverActivity.class);
+        intent.putExtra("country", country);
+        intent.putExtra("words", words);
+        intent.putExtra("lettersTable", lettersTable);
         startActivity(intent);
         finish();
     }
@@ -271,10 +271,18 @@ public class WordsGameActivity extends AppCompatActivity {
         }
 
         if (foundWords == totalWords) {
+            isGameFinished = true;
             timer.cancel();
             Intent intent = new Intent(WordsGameActivity.this, LevelCompletedActivity.class);
             startActivity(intent);
             finish();
         }
     }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        showGameOverDialog();
+    }
+
 }

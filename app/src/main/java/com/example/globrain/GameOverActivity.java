@@ -12,10 +12,19 @@ public class GameOverActivity extends AppCompatActivity {
     private Button tryAgainButton;
     private Button returnHomeButton;
 
+    private String country;
+    private String[] words;
+    private String lettersTable;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game_over);
+
+        Intent intent = getIntent();
+        country = intent.getStringExtra("country");
+        words = intent.getStringArrayExtra("words");
+        lettersTable = intent.getStringExtra("lettersTable");
 
         tryAgainButton = findViewById(R.id.tryAgainButton);
         returnHomeButton = findViewById(R.id.returnHomeButton);
@@ -23,9 +32,7 @@ public class GameOverActivity extends AppCompatActivity {
         tryAgainButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(GameOverActivity.this, WordsGameActivity.class);
-                startActivity(intent);
-                finish();
+                startGameActivity(country, words, lettersTable);
             }
         });
 
@@ -37,5 +44,13 @@ public class GameOverActivity extends AppCompatActivity {
                 finishAffinity();
             }
         });
+    }
+
+    private void startGameActivity(String country, String[] words, String lettersTable){
+        Intent intent = new Intent(GameOverActivity.this, WordsGameActivity.class);
+        intent.putExtra("country", country);
+        intent.putExtra("words", words);
+        intent.putExtra("lettersTable", lettersTable);
+        startActivity(intent);
     }
 }
