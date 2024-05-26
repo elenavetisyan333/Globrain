@@ -23,7 +23,7 @@ public class EmailVerificationActivity extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
 
-    Button returnBtn, resendBtn;
+    Button returnBtn;
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -35,7 +35,6 @@ public class EmailVerificationActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
 
         returnBtn = findViewById(R.id.returnButton);
-        resendBtn = findViewById(R.id.resendButton);
 
         returnBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -43,24 +42,6 @@ public class EmailVerificationActivity extends AppCompatActivity {
                 Intent intent = new Intent(EmailVerificationActivity.this, SignInActivity.class);
                 startActivity(intent);
                 finish();
-            }
-        });
-
-        resendBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                FirebaseUser user = mAuth.getCurrentUser();
-                user.sendEmailVerification().addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void unused) {
-                        Toast.makeText(EmailVerificationActivity.this, "Verification email has been sent", Toast.LENGTH_SHORT).show();
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(EmailVerificationActivity.this, "onFailure: Email hasn't been sent: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-                    }
-                });
             }
         });
 
