@@ -1,8 +1,6 @@
 package com.example.globrain;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -94,6 +92,9 @@ public class MapFragment extends Fragment {
             }
         });
 
+        // Lock the levels that are not unlocked
+        lockLevels();
+
         return view;
     }
 
@@ -105,17 +106,39 @@ public class MapFragment extends Fragment {
         startActivity(intent);
     }
 
-    private void saveUnlockedLevelIndex(int unlockedLevelIndex) {
-        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("GamePrefs", Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putInt("UnlockedLevelIndex", unlockedLevelIndex);
-        editor.apply();
-    }
-    private int getUnlockedLevelIndex() {
-        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("GamePrefs", Context.MODE_PRIVATE);
-        return sharedPreferences.getInt("UnlockedLevelIndex", 0);
+    private void lockLevels() {
+        // Lock all levels except the highest unlocked level
+        for (int i = 0; i < levels.size(); i++) {
+            ImageButton levelButton = getLevelButton(i);
+            if (i > highestUnlockedLevelIndex) {
+                levelButton.setEnabled(false);
+                levelButton.setAlpha(0.5f);
+            } else {
+                levelButton.setEnabled(true);
+                levelButton.setAlpha(1f);
+            }
+        }
     }
 
+    private ImageButton getLevelButton(int levelIndex) {
+        switch (levelIndex) {
+            case 0:
+                return franceButton;
+            case 1:
+                return armeniaButton;
+            case 2:
+                return italyButton;
+            case 3:
+                return russiaButton;
+            default:
+                return null;
+        }
+    }
+
+    private int getUnlockedLevelIndex() {
+        // Get the unlocked level index from Firestore or use a default value
+        return highestUnlockedLevelIndex;
+    }
 
     private void getUnlockedLevelIndexFromFirestore() {
         String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
@@ -130,7 +153,6 @@ public class MapFragment extends Fragment {
 
                             if (unlockedLevelIndex > highestUnlockedLevelIndex) {
                                 highestUnlockedLevelIndex = unlockedLevelIndex;
-                                saveUnlockedLevelIndex(unlockedLevelIndex);
                             }
                         } else {
                             // Document does not exist
@@ -145,8 +167,7 @@ public class MapFragment extends Fragment {
                 });
     }
 
-
-//    ------------------------------------- LEVELS -------------------------------------------------
+    // ------------------------------------- LEVELS -------------------------------------------------
 
     protected static class Level {
         private String country;
@@ -316,20 +337,20 @@ public class MapFragment extends Fragment {
 
         levels.add(new Level("Italy",
                 new String[]{"VENICE", "COLOSSEUM", "PASTA", "PIZZA", "DOLOMITES", "ROME", "GUCCI", "BRUSCHETTA", "MILAN"},
-                "PYMDIANFAFBJGD"+
-                "WNABBCVXPBFAVO"+
-                "WUMRSSEMWEPKXL"+
-                "GUDUIQNZPQAUDO"+
-                "UYBSITIMVASZPM"+
-                "CQBCBYCVGVTWUI"+
-                "CVKHAZEDJYATHT"+
-                "IOGEBQAMEHPUAE"+
-                "BCVTAVPIZZAUJS"+
-                "SSYTQHXXYFUQDD"+
-                "DDZAMILANBCBFP"+
-                "JIIZTPRTXZVHVO"+
-                "WTAFAROMEFACVD"+
-                "URMDCOLOSSEUME",
+                "PYMDIANFAFBJGD" +
+                        "WNABBCVXPBFAVO" +
+                        "WUMRSSEMWEPKXL" +
+                        "GUDUIQNZPQAUDO" +
+                        "UYBSITIMVASZPM" +
+                        "CQBCBYCVGVTWUI" +
+                        "CVKHAZEDJYATHT" +
+                        "IOGEBQAMEHPUAE" +
+                        "BCVTAVPIZZAUJS" +
+                        "SSYTQHXXYFUQDD" +
+                        "DDZAMILANBCBFP" +
+                        "JIIZTPRTXZVHVO" +
+                        "WTAFAROMEFACVD" +
+                        "URMDCOLOSSEUME",
 
                 new String[]{
                         "Venice is a city in northeastern Italy and the capital of the Veneto region. With its winding canals, striking architecture, and beautiful bridges, Venice is a popular destination for travel.",
@@ -369,21 +390,21 @@ public class MapFragment extends Fragment {
         );
 
         levels.add(new Level("Russia",
-                    new String[]{"MOSCOW", "PUSHKIN", "MATRYOSHKA", "KREMLIN", "PELMENI", "YANDEX", "HERMITAGE", "BAIKAL", "SAMOVAR"},
-                "BAIKALQZRLMZAH"+
-                "HAULYABUPRIAMK"+
-                "XXMOSCOWILNABK"+
-                "MATRYOSHKAAZSS"+
-                "MEMCZKASRQYYAI"+
-                "ZYANDEXKGZAMMA"+
-                "CNNPKHMARKTMOK"+
-                "PCPELMENIEBGVR"+
-                "UBKXQVOJJZCEAE"+
-                "SWSVFOJDRAALRM"+
-                "HLDHERMITAGEKL"+
-                "KJKAFRDUIHLIYI"+
-                "IADIQCSVPXUGGN"+
-                "NINGPSMPXKIULF",
+                new String[]{"MOSCOW", "PUSHKIN", "MATRYOSHKA", "KREMLIN", "PELMENI", "YANDEX", "HERMITAGE", "BAIKAL", "SAMOVAR"},
+                "BAIKALQZRLMZAH" +
+                        "HAULYABUPRIAMK" +
+                        "XXMOSCOWILNABK" +
+                        "MATRYOSHKAAZSS" +
+                        "MEMCZKASRQYYAI" +
+                        "ZYANDEXKGZAMMA" +
+                        "CNNPKHMARKTMOK" +
+                        "PCPELMENIEBGVR" +
+                        "UBKXQVOJJZCEAE" +
+                        "SWSVFOJDRAALRM" +
+                        "HLDHERMITAGEKL" +
+                        "KJKAFRDUIHLIYI" +
+                        "IADIQCSVPXUGGN" +
+                        "NINGPSMPXKIULF",
 
                 new String[]{
                         "Moscow is the capital and largest city of Russia. It is among the world's largest cities, being the most populous city in its entirety in Europe, the largest urban and metropolitan area in Europe.",
@@ -424,5 +445,6 @@ public class MapFragment extends Fragment {
 
 
         return levels;
+
     }
 }

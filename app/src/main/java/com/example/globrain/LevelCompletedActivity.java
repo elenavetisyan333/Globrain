@@ -64,10 +64,13 @@ public class LevelCompletedActivity extends AppCompatActivity {
     private void startNextLevel() {
         int currentUnlockedLevelIndex = MapFragment.highestUnlockedLevelIndex;
 
-        if (currentUnlockedLevelIndex < levels.size()) {
-            MapFragment.Level nextLevel = levels.get(currentUnlockedLevelIndex);
+        if (currentUnlockedLevelIndex < levels.size() - 1) {
+            MapFragment.Level nextLevel = levels.get(currentUnlockedLevelIndex + 1);
             startGameActivity(nextLevel.getCountry(), nextLevel.getWords(), nextLevel.getLettersTable());
-        } else if (currentUnlockedLevelIndex == levels.size()) {
+            // Increment the unlocked level index and save it
+            MapFragment.highestUnlockedLevelIndex++;
+            saveUnlockedLevelIndexToFirestore(MapFragment.highestUnlockedLevelIndex);
+        } else if (currentUnlockedLevelIndex == levels.size() - 1) {
             Toast.makeText(this, "No more levels available", Toast.LENGTH_SHORT).show();
             returnHome();
         } else {
@@ -91,15 +94,12 @@ public class LevelCompletedActivity extends AppCompatActivity {
     }
 
     private void saveUnlockedLevelIndexToFirestore(int unlockedLevelIndex) {
-        // Get the current user's document reference in Firestore
         String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
         DocumentReference userRef = FirebaseFirestore.getInstance().collection("users").document(userId);
 
-        // Create a data object to update the unlockedLevelIndex field
         Map<String, Object> data = new HashMap<>();
         data.put("unlockedLevelIndex", unlockedLevelIndex);
 
-        // Update the unlockedLevelIndex field in the user's document
         userRef.set(data, SetOptions.merge())
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
