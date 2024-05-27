@@ -440,48 +440,48 @@ public class WordsGameActivity extends AppCompatActivity {
     private int getImageLink(String word) {
         Map<String, Integer> wordImageResources = new HashMap<>();
 
-        wordImageResources.put("EIFFEL", R.drawable.globrain_icon_fin);
-        wordImageResources.put("CROISSANT", R.drawable.globrain_icon_fin);
-        wordImageResources.put("PARIS", R.drawable.globrain_icon_fin);
-        wordImageResources.put("BAGUETTE", R.drawable.globrain_icon_fin);
-        wordImageResources.put("LOUVRE", R.drawable.globrain_icon_fin);
-        wordImageResources.put("DIOR", R.drawable.globrain_icon_fin);
-        wordImageResources.put("MACARON", R.drawable.globrain_icon_fin);
-        wordImageResources.put("CHAMPAGNE", R.drawable.globrain_icon_fin);
-        wordImageResources.put("COGNAC", R.drawable.globrain_icon_fin);
+        wordImageResources.put("EIFFEL", R.drawable.eiffel);
+        wordImageResources.put("CROISSANT", R.drawable.croissant);
+        wordImageResources.put("PARIS", R.drawable.paris);
+        wordImageResources.put("BAGUETTE", R.drawable.baguette);
+        wordImageResources.put("LOUVRE", R.drawable.louvre);
+        wordImageResources.put("DIOR", R.drawable.dior);
+        wordImageResources.put("MACARON", R.drawable.macaron);
+        wordImageResources.put("CHAMPAGNE", R.drawable.champagne);
+        wordImageResources.put("COGNAC", R.drawable.cognac);
 
 
-        wordImageResources.put("YEREVAN", R.drawable.globrain_icon_fin);
-        wordImageResources.put("MATENADARAN", R.drawable.globrain_icon_fin);
-        wordImageResources.put("APRICOT", R.drawable.globrain_icon_fin);
-        wordImageResources.put("GATA", R.drawable.globrain_icon_fin);
-        wordImageResources.put("DUDUK", R.drawable.globrain_icon_fin);
-        wordImageResources.put("KHACHKAR", R.drawable.globrain_icon_fin);
-        wordImageResources.put("MASHTOTS", R.drawable.globrain_icon_fin);
-        wordImageResources.put("PREGOMESH", R.drawable.globrain_icon_fin);
-        wordImageResources.put("GARNI", R.drawable.globrain_icon_fin);
+        wordImageResources.put("YEREVAN", R.drawable.yerevan);
+        wordImageResources.put("MATENADARAN", R.drawable.matenadaran);
+        wordImageResources.put("APRICOT", R.drawable.apricot);
+        wordImageResources.put("GATA", R.drawable.gata);
+        wordImageResources.put("DUDUK", R.drawable.duduk);
+        wordImageResources.put("KHACHKAR", R.drawable.khachkar);
+        wordImageResources.put("MASHTOTS", R.drawable.mashtots);
+        wordImageResources.put("PREGOMESH", R.drawable.pregomesh);
+        wordImageResources.put("GARNI", R.drawable.garni);
 
 
-        wordImageResources.put("VENICE", R.drawable.globrain_icon_fin);
-        wordImageResources.put("COLOSSEUM", R.drawable.globrain_icon_fin);
-        wordImageResources.put("PASTA", R.drawable.globrain_icon_fin);
-        wordImageResources.put("PIZZA", R.drawable.globrain_icon_fin);
-        wordImageResources.put("DOLOMITES", R.drawable.globrain_icon_fin);
-        wordImageResources.put("ROME", R.drawable.globrain_icon_fin);
-        wordImageResources.put("GUCCI", R.drawable.globrain_icon_fin);
-        wordImageResources.put("BRUSCHETTA", R.drawable.globrain_icon_fin);
-        wordImageResources.put("MILAN", R.drawable.globrain_icon_fin);
+        wordImageResources.put("VENICE", R.drawable.venice);
+        wordImageResources.put("COLOSSEUM", R.drawable.colosseum);
+        wordImageResources.put("PASTA", R.drawable.pasta);
+        wordImageResources.put("PIZZA", R.drawable.pizza);
+        wordImageResources.put("DOLOMITES", R.drawable.colosseum);
+        wordImageResources.put("ROME", R.drawable.rome);
+        wordImageResources.put("GUCCI", R.drawable.gucci);
+        wordImageResources.put("BRUSCHETTA", R.drawable.bruschetta);
+        wordImageResources.put("MILAN", R.drawable.milan);
 
 
-        wordImageResources.put("MOSCOW", R.drawable.globrain_icon_fin);
-        wordImageResources.put("PUSHKIN", R.drawable.globrain_icon_fin);
-        wordImageResources.put("MATRYOSHKA", R.drawable.globrain_icon_fin);
-        wordImageResources.put("KREMLIN", R.drawable.globrain_icon_fin);
-        wordImageResources.put("PELMENI", R.drawable.globrain_icon_fin);
-        wordImageResources.put("YANDEX", R.drawable.globrain_icon_fin);
-        wordImageResources.put("HERMITAGE", R.drawable.globrain_icon_fin);
-        wordImageResources.put("BAIKAL", R.drawable.globrain_icon_fin);
-        wordImageResources.put("SAMOVAR", R.drawable.globrain_icon_fin);
+        wordImageResources.put("MOSCOW", R.drawable.moscow);
+        wordImageResources.put("PUSHKIN", R.drawable.pushkin);
+        wordImageResources.put("MATRYOSHKA", R.drawable.matryoshka);
+        wordImageResources.put("KREMLIN", R.drawable.kremlin);
+        wordImageResources.put("PELMENI", R.drawable.pelmeni);
+        wordImageResources.put("YANDEX", R.drawable.yandex);
+        wordImageResources.put("HERMITAGE", R.drawable.hermitage);
+        wordImageResources.put("BAIKAL", R.drawable.baikal);
+        wordImageResources.put("SAMOVAR", R.drawable.samovar);
 
         return wordImageResources.get(word);
     }

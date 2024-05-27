@@ -12,7 +12,6 @@
         android:layout_height="100dp"
         android:adjustViewBounds="true"
         android:scaleType="centerInside"
-        android:src="@drawable/globrain_icon_fin"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

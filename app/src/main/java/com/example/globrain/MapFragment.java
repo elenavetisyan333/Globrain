@@ -256,15 +256,15 @@ public class MapFragment extends Fragment {
                 },
 
                 new String[]{
-                        "@drawable/globrain_icon_fin",
-                        "@drawable/globrain_icon_fin",
-                        "@drawable/globrain_icon_fin",
-                        "@drawable/globrain_icon_fin",
-                        "@drawable/globrain_icon_fin",
-                        "@drawable/globrain_icon_fin",
-                        "@drawable/globrain_icon_fin",
-                        "@drawable/globrain_icon_fin",
-                        "@drawable/globrain_icon_fin"
+                        "@drawable/eiffel",
+                        "@drawable/croissant",
+                        "@drawable/paris",
+                        "@drawable/baguette",
+                        "@drawable/louvre",
+                        "@drawable/dior",
+                        "@drawable/macaron",
+                        "@drawable/champagne",
+                        "@drawable/cognac"
                 },
 
                 new String[]{
@@ -310,15 +310,15 @@ public class MapFragment extends Fragment {
                 },
 
                 new String[]{
-                        "@drawable/globrain_icon_fin",
-                        "@drawable/globrain_icon_fin",
-                        "@drawable/globrain_icon_fin",
-                        "@drawable/globrain_icon_fin",
-                        "@drawable/globrain_icon_fin",
-                        "@drawable/globrain_icon_fin",
-                        "@drawable/globrain_icon_fin",
-                        "@drawable/globrain_icon_fin",
-                        "@drawable/globrain_icon_fin"
+                        "@drawable/yerevan",
+                        "@drawable/matenadaran",
+                        "@drawable/apricot",
+                        "@drawable/gata",
+                        "@drawable/duduk",
+                        "@drawable/khachkar",
+                        "@drawable/mashtots",
+                        "@drawable/pregomesh",
+                        "@drawable/garni"
                 },
 
                 new String[]{
@@ -365,15 +365,15 @@ public class MapFragment extends Fragment {
                 },
 
                 new String[]{
-                        "@drawable/globrain_icon_fin",
-                        "@drawable/globrain_icon_fin",
-                        "@drawable/globrain_icon_fin",
-                        "@drawable/globrain_icon_fin",
-                        "@drawable/globrain_icon_fin",
-                        "@drawable/globrain_icon_fin",
-                        "@drawable/globrain_icon_fin",
-                        "@drawable/globrain_icon_fin",
-                        "@drawable/globrain_icon_fin"
+                        "@drawable/venice",
+                        "@drawable/colosseum",
+                        "@drawable/pasta",
+                        "@drawable/pizza",
+                        "@drawable/dolomites",
+                        "@drawable/rome",
+                        "@drawable/gucci",
+                        "@drawable/bruschetta",
+                        "@drawable/milan"
                 },
 
                 new String[]{
@@ -419,15 +419,15 @@ public class MapFragment extends Fragment {
                 },
 
                 new String[]{
-                        "@drawable/globrain_icon_fin",
-                        "@drawable/globrain_icon_fin",
-                        "@drawable/globrain_icon_fin",
-                        "@drawable/globrain_icon_fin",
-                        "@drawable/globrain_icon_fin",
-                        "@drawable/globrain_icon_fin",
-                        "@drawable/globrain_icon_fin",
-                        "@drawable/globrain_icon_fin",
-                        "@drawable/globrain_icon_fin"
+                        "@drawable/moscow",
+                        "@drawable/pushkin",
+                        "@drawable/matryoshka",
+                        "@drawable/kremlin",
+                        "@drawable/pelmeni",
+                        "@drawable/yandex",
+                        "@drawable/hermitage",
+                        "@drawable/baikal",
+                        "@drawable/samovar"
                 },
 
                 new String[]{
