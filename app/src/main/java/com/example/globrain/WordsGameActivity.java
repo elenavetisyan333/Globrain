@@ -2,6 +2,7 @@
 package com.example.globrain;
 
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -302,6 +303,9 @@ public class WordsGameActivity extends AppCompatActivity {
     }
 
     private void showWordInfoDialog(String word) {
+
+        timer.cancel();
+
         // Create a dialog instance
         Dialog dialog = new Dialog(this);
         dialog.setContentView(R.layout.word_info_dialog);
@@ -322,6 +326,29 @@ public class WordsGameActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 openWebPage(getWordReadMoreLink(word));
+            }
+        });
+
+        dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialog) {
+
+                timer = new CountDownTimer(timeLeftInMillis, 1000) {
+                    @Override
+                    public void onTick(long millisUntilFinished) {
+                        timeLeftInMillis = millisUntilFinished;
+                        updateTimer();
+                    }
+
+                    @Override
+                    public void onFinish() {
+                        if(!isGameFinished){
+                            showGameOverDialog();
+                        }
+                    }
+                };
+
+                timer.start();
             }
         });
 
