@@ -10,4 +10,5 @@
     <color name="grid_color">#36353535</color>
     <color name="let_color">#C4FFFFFF</color>
     <color name="selected_let">#94FFFFFF</color>
+    <color name="dialog_bg">#ED00091A</color>
 </resources>

@@ -25,10 +25,12 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import com.google.android.flexbox.FlexboxLayout;
+
 public class WordsGameActivity extends AppCompatActivity {
 
     private GridLayout grid;
-    private LinearLayout wordsContainer;
+    private FlexboxLayout wordsContainer;
 
     private StringBuilder selectedWord;
     private List<TextView> selectedCells;

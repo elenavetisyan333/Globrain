@@ -4,7 +4,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical">
+    android:background="@color/main_blue"
+    android:paddingTop="22dp"
+    android:paddingBottom="22dp"
+    android:paddingLeft="20dp"
+    android:paddingRight="20dp"
+    android:gravity="center">
 
     <ImageView
         android:id="@+id/wordImageView"
@@ -12,48 +17,50 @@
         android:layout_height="100dp"
         android:adjustViewBounds="true"
         android:scaleType="centerInside"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:srcCompat="@drawable/globrain_icon_fin" />
 
     <TextView
         android:id="@+id/wordNameTextView"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:padding="16dp"
-        android:textColor="@android:color/black"
+        android:layout_marginTop="16dp"
+        android:textColor="@android:color/white"
         android:textSize="18sp"
         android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintTop_toBottomOf="@+id/wordImageView"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/wordImageView" />
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:text="Word Name" />
 
     <TextView
         android:id="@+id/wordDescriptionTextView"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:padding="16dp"
-        android:textColor="@android:color/black"
+        android:layout_marginTop="10dp"
+        android:textColor="@android:color/white"
         android:textSize="16sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintTop_toBottomOf="@+id/wordNameTextView"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/wordNameTextView" />
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:text="Word Description" />
 
     <Button
         android:id="@+id/readMoreButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="44dp"
-        android:padding="8dp"
+        android:layout_marginTop="16dp"
+        android:backgroundTint="@color/submit_color"
         android:text="Read More"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
+        android:paddingLeft="33dp"
+        android:paddingTop="15dp"
+        android:paddingRight="33dp"
+        android:paddingBottom="15dp"
+        android:textColor="@android:color/white"
+        app:layout_constraintTop_toBottomOf="@+id/wordDescriptionTextView"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/wordDescriptionTextView" />
+        app:layout_constraintEnd_toEndOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
