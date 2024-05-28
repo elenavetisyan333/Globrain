@@ -11,4 +11,5 @@
     <color name="let_color">#C4FFFFFF</color>
     <color name="selected_let">#94FFFFFF</color>
     <color name="dialog_bg">#ED00091A</color>
+    <color name="sign_out_bg">#0000091A</color>
 </resources>
