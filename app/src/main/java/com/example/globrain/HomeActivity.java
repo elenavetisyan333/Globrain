@@ -2,7 +2,6 @@ package com.example.globrain;
 
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageButton;
 
 import androidx.activity.EdgeToEdge;
@@ -16,21 +15,26 @@ import androidx.fragment.app.FragmentTransaction;
 
 public class HomeActivity extends AppCompatActivity {
 
+    private ImageButton mapButton;
+    private ImageButton profileButton;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_home);
 
-        addFragment(new MapFragment());
+        mapButton = findViewById(R.id.mapButton);
+        profileButton = findViewById(R.id.profileButton);
 
-        ImageButton mapButton = findViewById(R.id.mapButton);
-        ImageButton profileButton = findViewById(R.id.profileButton);
+        addFragment(new MapFragment());
+        updateButtonState(mapButton, profileButton);
 
         mapButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 replaceFragment(new MapFragment());
+                updateButtonState(mapButton, profileButton);
             }
         });
 
@@ -38,6 +42,7 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 replaceFragment(new ProfileFragment());
+                updateButtonState(profileButton, mapButton);
             }
         });
 
@@ -60,5 +65,10 @@ public class HomeActivity extends AppCompatActivity {
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.add(R.id.frameLayout, fragment);
         fragmentTransaction.commit();
+    }
+
+    private void updateButtonState(ImageButton activeButton, ImageButton inactiveButton) {
+        activeButton.setAlpha(1.0f);
+        inactiveButton.setAlpha(0.5f);
     }
 }

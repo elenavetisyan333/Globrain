@@ -92,7 +92,6 @@ public class MapFragment extends Fragment {
             }
         });
 
-        // Lock the levels that are not unlocked
         lockLevels();
 
         return view;
@@ -112,7 +111,7 @@ public class MapFragment extends Fragment {
             ImageButton levelButton = getLevelButton(i);
             if (i > highestUnlockedLevelIndex) {
                 levelButton.setEnabled(false);
-                levelButton.setAlpha(0.5f);
+                levelButton.setAlpha(0.6f);
             } else {
                 levelButton.setEnabled(true);
                 levelButton.setAlpha(1f);
