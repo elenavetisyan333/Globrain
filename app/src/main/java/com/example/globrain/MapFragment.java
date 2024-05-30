@@ -27,8 +27,7 @@ import java.util.Map;
 public class MapFragment extends Fragment {
 
     private List<Level> levels;
-    private int currentUnlockedLevelIndex = 0;
-    protected static int highestUnlockedLevelIndex = 0;
+    private int highestUnlockedLevelIndex = 0;
 
     private ImageButton franceButton;
     private ImageButton armeniaButton;
@@ -40,8 +39,7 @@ public class MapFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_map, container, false);
 
         levels = getLevels();
-        currentUnlockedLevelIndex = getUnlockedLevelIndex();
-        getUnlockedLevelIndexFromFirestore();
+        fetchHighestUnlockedLevelIndexFromFirestore();
 
         franceButton = view.findViewById(R.id.FranceIcon);
         armeniaButton = view.findViewById(R.id.ArmeniaIcon);
@@ -51,48 +49,30 @@ public class MapFragment extends Fragment {
         franceButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (currentUnlockedLevelIndex >= 0) {
-                    startGameActivity(levels.get(0));
-                } else {
-                    Toast.makeText(getActivity(), "Level is locked. Complete previous levels to unlock.", Toast.LENGTH_SHORT).show();
-                }
+                startGameActivity(levels.get(0));
             }
         });
 
         armeniaButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (currentUnlockedLevelIndex >= 1) {
-                    startGameActivity(levels.get(1));
-                } else {
-                    Toast.makeText(getActivity(), "Level is locked. Complete previous levels to unlock.", Toast.LENGTH_SHORT).show();
-                }
+                startGameActivity(levels.get(1));
             }
         });
 
         italyButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (currentUnlockedLevelIndex >= 2) {
-                    startGameActivity(levels.get(2));
-                } else {
-                    Toast.makeText(getActivity(), "Level is locked. Complete previous levels to unlock.", Toast.LENGTH_SHORT).show();
-                }
+                startGameActivity(levels.get(2));
             }
         });
 
         russiaButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (currentUnlockedLevelIndex >= 3) {
-                    startGameActivity(levels.get(3));
-                } else {
-                    Toast.makeText(getActivity(), "Level is locked. Complete previous levels to unlock.", Toast.LENGTH_SHORT).show();
-                }
+                startGameActivity(levels.get(3));
             }
         });
-
-        lockLevels();
 
         return view;
     }
@@ -105,8 +85,33 @@ public class MapFragment extends Fragment {
         startActivity(intent);
     }
 
+    protected void fetchHighestUnlockedLevelIndexFromFirestore() {
+        String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        DocumentReference userRef = FirebaseFirestore.getInstance().collection("users").document(userId);
+
+        userRef.get()
+                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                    @Override
+                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                        if (documentSnapshot.exists()) {
+                            Integer unlockedLevelIndex = documentSnapshot.getLong("highestUnlockedLevelIndex").intValue();
+                            highestUnlockedLevelIndex = unlockedLevelIndex;
+                            lockLevels();
+                        } else {
+                            highestUnlockedLevelIndex = 0; // Default to 0 if the document doesn't exist
+                            lockLevels();
+                        }
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(getActivity(), "Failed to fetch unlocked level index from Firestore", Toast.LENGTH_SHORT).show();
+                    }
+                });
+    }
+
     private void lockLevels() {
-        // Lock all levels except the highest unlocked level
         for (int i = 0; i < levels.size(); i++) {
             ImageButton levelButton = getLevelButton(i);
             if (i > highestUnlockedLevelIndex) {
@@ -134,34 +139,25 @@ public class MapFragment extends Fragment {
         }
     }
 
-    private int getUnlockedLevelIndex() {
-        // Get the unlocked level index from Firestore or use a default value
-        return highestUnlockedLevelIndex;
-    }
-
-    private void getUnlockedLevelIndexFromFirestore() {
+    // Define a method to save the unlocked level index to Firestore
+    public static void saveUnlockedLevelIndexToFirestore(int unlockedLevelIndex) {
         String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
         DocumentReference userRef = FirebaseFirestore.getInstance().collection("users").document(userId);
 
-        userRef.get()
-                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                    @Override
-                    public void onSuccess(DocumentSnapshot documentSnapshot) {
-                        if (documentSnapshot.exists()) {
-                            Integer unlockedLevelIndex = documentSnapshot.getLong("unlockedLevelIndex").intValue();
+        Map<String, Object> data = new HashMap<>();
+        data.put("highestUnlockedLevelIndex", unlockedLevelIndex);
 
-                            if (unlockedLevelIndex > highestUnlockedLevelIndex) {
-                                highestUnlockedLevelIndex = unlockedLevelIndex;
-                            }
-                        } else {
-                            // Document does not exist
-                        }
+        userRef.set(data, SetOptions.merge())
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        // Successfully saved the unlocked level index to Firestore
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        // Failed to retrieve the unlocked level index from Firestore
+                        // Failed to save the unlocked level index to Firestore
                     }
                 });
     }

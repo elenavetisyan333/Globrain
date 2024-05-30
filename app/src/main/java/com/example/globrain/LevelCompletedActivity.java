@@ -13,12 +13,8 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.SetOptions;
-
-import java.util.List;
-import java.util.HashMap;
-import java.util.Map;
 
 public class LevelCompletedActivity extends AppCompatActivity {
 
@@ -29,19 +25,23 @@ public class LevelCompletedActivity extends AppCompatActivity {
     private String[] words;
     private String lettersTable;
 
-    private List<MapFragment.Level> levels;
+    private int lastPlayedLevelIndex;
+    private int highestUnlockedLevelIndex;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_level_completed);
 
+        fetchHighestUnlockedLevelIndexFromFirestore();
+
         Intent intent = getIntent();
         country = intent.getStringExtra("country");
         words = intent.getStringArrayExtra("words");
         lettersTable = intent.getStringExtra("lettersTable");
+        highestUnlockedLevelIndex = intent.getIntExtra("highestUnlockedLevelIndex", 0);
 
-        levels = MapFragment.getLevels();
+        lastPlayedLevelIndex = getLastPlayedLevelIndex();
 
         nextLevelButton = findViewById(R.id.nextLevelButton);
         returnHomeButton = findViewById(R.id.returnHomeButton);
@@ -60,22 +60,74 @@ public class LevelCompletedActivity extends AppCompatActivity {
             }
         });
     }
+//    private void startNextLevel() {
+//        if (lastPlayedLevelIndex < MapFragment.getLevels().size() - 1) {
+//            lastPlayedLevelIndex++;
+//            MapFragment.Level nextLevel = MapFragment.getLevels().get(lastPlayedLevelIndex);
+//            startGameActivity(nextLevel.getCountry(), nextLevel.getWords(), nextLevel.getLettersTable());
+//            saveLastPlayedLevelIndex(lastPlayedLevelIndex);
+//
+//            if (lastPlayedLevelIndex > highestUnlockedLevelIndex) {
+//                highestUnlockedLevelIndex = lastPlayedLevelIndex;
+//                MapFragment.saveUnlockedLevelIndexToFirestore(highestUnlockedLevelIndex);
+//            }
+//        } else {
+//            Toast.makeText(this, "No more levels available", Toast.LENGTH_SHORT).show();
+//            returnHome();
+//        }
+//    }
 
     private void startNextLevel() {
-        int currentUnlockedLevelIndex = MapFragment.highestUnlockedLevelIndex;
-
-        if (currentUnlockedLevelIndex < levels.size() - 1) {
-            MapFragment.Level nextLevel = levels.get(currentUnlockedLevelIndex + 1);
-            startGameActivity(nextLevel.getCountry(), nextLevel.getWords(), nextLevel.getLettersTable());
-            // Increment the unlocked level index and save it
-            MapFragment.highestUnlockedLevelIndex++;
-            saveUnlockedLevelIndexToFirestore(MapFragment.highestUnlockedLevelIndex);
-        } else if (currentUnlockedLevelIndex == levels.size() - 1) {
+        if (lastPlayedLevelIndex < MapFragment.getLevels().size() - 1) {
+            lastPlayedLevelIndex++;
+        } else {
             Toast.makeText(this, "No more levels available", Toast.LENGTH_SHORT).show();
             returnHome();
-        } else {
-            Toast.makeText(this, "Invalid level index", Toast.LENGTH_SHORT).show();
+            return;
         }
+
+        MapFragment.Level nextLevel = MapFragment.getLevels().get(lastPlayedLevelIndex);
+        startGameActivity(nextLevel.getCountry(), nextLevel.getWords(), nextLevel.getLettersTable());
+        saveLastPlayedLevelIndex(lastPlayedLevelIndex);
+
+        if (lastPlayedLevelIndex > highestUnlockedLevelIndex) {
+            highestUnlockedLevelIndex = lastPlayedLevelIndex;
+            MapFragment.saveUnlockedLevelIndexToFirestore(highestUnlockedLevelIndex);
+        }
+    }
+
+    private void fetchHighestUnlockedLevelIndexFromFirestore() {
+        String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        DocumentReference userRef = FirebaseFirestore.getInstance().collection("users").document(userId);
+
+        userRef.get()
+                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                    @Override
+                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                        if (documentSnapshot.exists()) {
+                            Integer unlockedLevelIndex = documentSnapshot.getLong("highestUnlockedLevelIndex").intValue();
+                            highestUnlockedLevelIndex = unlockedLevelIndex;
+                            lastPlayedLevelIndex = highestUnlockedLevelIndex;
+                        } else {
+                            highestUnlockedLevelIndex = 0; // Default to 0 if the document doesn't exist
+                            lastPlayedLevelIndex = highestUnlockedLevelIndex;
+                        }
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(LevelCompletedActivity.this, "Failed to fetch unlocked level index from Firestore", Toast.LENGTH_SHORT).show();
+                    }
+                });
+    }
+
+    private int getLastPlayedLevelIndex() {
+        return highestUnlockedLevelIndex;
+    }
+
+    private void saveLastPlayedLevelIndex(int index) {
+        // No need to save last played level index in this case
     }
 
     private void returnHome() {
@@ -91,29 +143,5 @@ public class LevelCompletedActivity extends AppCompatActivity {
         intent.putExtra("lettersTable", lettersTable);
         startActivity(intent);
         finish();
-    }
-
-    private void saveUnlockedLevelIndexToFirestore(int unlockedLevelIndex) {
-        String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        DocumentReference userRef = FirebaseFirestore.getInstance().collection("users").document(userId);
-
-        Map<String, Object> data = new HashMap<>();
-        data.put("unlockedLevelIndex", unlockedLevelIndex);
-
-        userRef.set(data, SetOptions.merge())
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        // Successfully saved the unlocked level index to Firestore
-                        Toast.makeText(LevelCompletedActivity.this, "Unlocked level index saved to Firestore", Toast.LENGTH_SHORT).show();
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        // Failed to save the unlocked level index to Firestore
-                        Toast.makeText(LevelCompletedActivity.this, "Failed to save unlocked level index to Firestore", Toast.LENGTH_SHORT).show();
-                    }
-                });
     }
 }
