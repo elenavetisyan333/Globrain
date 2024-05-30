@@ -41,7 +41,7 @@ public class WordsGameActivity extends AppCompatActivity {
 
     private CountDownTimer timer;
     private TextView timerTextView;
-    private long timeLeftInMillis = 50000; //
+    private long timeLeftInMillis = 150000; // 2:30
 
     private String country;
     private String[] words;
@@ -306,22 +306,20 @@ public class WordsGameActivity extends AppCompatActivity {
 
         timer.cancel();
 
-        // Create a dialog instance
         Dialog dialog = new Dialog(this);
         dialog.setContentView(R.layout.word_info_dialog);
 
-        // Get references to the dialog views
         ImageView wordImageView = dialog.findViewById(R.id.wordImageView);
         TextView wordNameTextView = dialog.findViewById(R.id.wordNameTextView);
         TextView wordDescriptionTextView = dialog.findViewById(R.id.wordDescriptionTextView);
         Button readMoreButton = dialog.findViewById(R.id.readMoreButton);
 
-        // Set the word image, name, and description
+
         wordImageView.setImageResource(getImageLink(word));
         wordNameTextView.setText(word);
         wordDescriptionTextView.setText(getWordDescription(word));
 
-        // Set click listener for the read more button
+
         readMoreButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -352,7 +350,6 @@ public class WordsGameActivity extends AppCompatActivity {
             }
         });
 
-        // Show the dialog
         dialog.show();
     }
 

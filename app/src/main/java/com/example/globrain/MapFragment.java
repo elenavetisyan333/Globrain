@@ -33,6 +33,9 @@ public class MapFragment extends Fragment {
     private ImageButton armeniaButton;
     private ImageButton italyButton;
     private ImageButton russiaButton;
+    private ImageButton spainButton;
+    private ImageButton japanButton;
+    private ImageButton argentinaButton;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -45,6 +48,19 @@ public class MapFragment extends Fragment {
         armeniaButton = view.findViewById(R.id.ArmeniaIcon);
         italyButton = view.findViewById(R.id.ItalyIcon);
         russiaButton = view.findViewById(R.id.RussiaIcon);
+        japanButton = view.findViewById(R.id.JapanIcon);
+        argentinaButton = view.findViewById(R.id.ArgentinaIcon);
+        spainButton = view.findViewById(R.id.SpainIcon);
+
+
+        spainButton.setEnabled(false);
+        spainButton.setAlpha(0.6f);
+
+        japanButton.setEnabled(false);
+        japanButton.setAlpha(0.6f);
+
+        argentinaButton.setEnabled(false);
+        argentinaButton.setAlpha(0.6f);
 
         franceButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -123,6 +139,7 @@ public class MapFragment extends Fragment {
             }
         }
     }
+
 
     private ImageButton getLevelButton(int levelIndex) {
         switch (levelIndex) {

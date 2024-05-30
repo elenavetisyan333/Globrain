@@ -7,7 +7,8 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:gravity="center"
-    android:background="@color/main_blue">
+    android:background="@color/main_blue"
+    tools:ignore="ExtraText">
 
 
     <TextView
@@ -35,12 +36,19 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView" />
 
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.5" />
+
     <Button
         android:id="@+id/tryAgainButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_marginStart="40sp"
+        android:layout_marginRight="30dp"
         android:layout_marginTop="20dp"
         android:background="@drawable/button_selector"
         android:paddingLeft="20dp"
@@ -50,7 +58,7 @@
         android:text="Try Again"
         android:textColor="@android:color/white"
         android:textSize="18sp"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/guideline_center"
         app:layout_constraintTop_toBottomOf="@+id/imageView3" />
 
     <Button
@@ -59,7 +67,7 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="20dp"
-        android:layout_marginEnd="40sp"
+        android:layout_marginLeft="22dp"
         android:background="@drawable/button_selector"
         android:paddingLeft="20dp"
         android:paddingRight="20dp"
@@ -68,7 +76,7 @@
         android:text="Return Home"
         android:textColor="@android:color/white"
         android:textSize="18sp"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/guideline_center"
         app:layout_constraintTop_toBottomOf="@+id/imageView3" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
